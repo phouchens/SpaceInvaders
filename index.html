@@ -23,16 +23,52 @@
       //player object
       var player = {
           color: "#00A",
-          x:200,
-          y:270,
-          width: 32,
-          height: 32,
-          draw: function(){
-              canvas.fillStyle = this.color;
-              canvas.fillRect(this.x,this.y,this.width,this.height);
+          x: 50,
+          y: 270,
+          width: 20,
+          height: 30,
+          draw: function() {
+            canvas.fillStyle = this.color;
+            canvas.fillRect(this.x, this.y, this.width, this.height);
           }
-      };
+        };
 
+      var playerBullets = [];
+
+      //buller constructor to creat bullet instances
+     function Bullet(I) {
+          I.active = true;
+
+          I.xVelocity = 0;
+          I.yVelocity = -I.speed;
+          I.width = 3;
+          I.height = 3;
+          I.color = "#000";
+
+          I.inBounds = function() {
+            return I.x >= 0 && I.x <= CANVAS_WIDTH &&
+              I.y >= 0 && I.y <= CANVAS_HEIGHT;
+          };
+
+          I.draw = function() {
+            canvas.fillStyle = this.color;
+            canvas.fillRect(this.x, this.y, this.width, this.height);
+          };
+
+          I.update = function() {
+            I.x += I.xVelocity;
+            I.y += I.yVelocity;
+
+            I.active = I.active && I.inBounds();
+          };
+
+          I.explode = function() {
+            this.active = false;
+            // Extra Credit: Add an explosion graphic
+          };
+
+          return I;
+        }
 
 
       //convention develop in JavaScript to use the $() function as a shortcut way to refer to document.getElementById().
@@ -55,20 +91,54 @@
 
 
       function update(){
+          if(keydown.space) {
+            player.shoot();
+          }
+
           if(keydown.left) {
-              player.x -= 5;
+            player.x -= 5;
           }
 
           if(keydown.right) {
-              player.x += 5;
+            player.x += 5;
           }
 
           player.x = player.x.clamp(0, CANVAS_WIDTH - player.width);
+
+          playerBullets.forEach(function(bullet) {
+            bullet.update();
+          });
+
+          playerBullets = playerBullets.filter(function(bullet) {
+            return bullet.active;
+          });
       }
 
+      //when a player shoots, creat a bullet instance and add it to collection
+      player.shoot = function() {
+          var bulletPosition = this.midpoint();
+
+          playerBullets.push(Bullet({
+            speed: 5,
+            x: bulletPosition.x,
+            y: bulletPosition.y
+          }));
+      };
+
+      player.midpoint = function() {
+          return {
+            x: this.x + this.width/2,
+            y: this.y + this.height/2
+          };
+        };
+
       function draw() {
-          canvas.clearRect(0,0, CANVAS_WIDTH, CANVAS_HEIGHT);
+          canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
           player.draw();
+
+          playerBullets.forEach(function(bullet) {
+            bullet.draw();
+          });
       }
       //}}>
     </script>
