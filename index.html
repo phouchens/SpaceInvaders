@@ -27,9 +27,10 @@
           y: 270,
           width: 20,
           height: 30,
+          sprite: Sprite("player"),
+
           draw: function() {
-            canvas.fillStyle = this.color;
-            canvas.fillRect(this.x, this.y, this.width, this.height);
+            this.sprite.draw(canvas, this.x, this.y);
           }
         };
 
@@ -71,9 +72,16 @@
           return I;
         }
 
+
+
+
+
+
+
       enemies =[];
 
       function Enemy(I) {
+          //sets I to the parameter supplied or an empty object if none are provided.
           I = I || {};
           I.active = true;
           I.age = Math.floor(Math.random() * 128);
@@ -89,9 +97,10 @@
               return I.x >= 0 && I.x <= CANVAS_WIDTH &&
                   I.y >= 0 && I.y <= CANVAS_HEIGHT;
           };
+          I.sprite = Sprite("enemy");
+
           I.draw = function() {
-            canvas.fillStyle = this.color;
-            canvas.fillRect(this.x, this.y , this.width, this.height);
+            this.sprite.draw(canvas,this.x,this.y);
           };
           I.update = function() {
             I.x += I.xVelocity;
@@ -112,6 +121,8 @@
       var canvas = canvasElement.get(0).getContext("2d");
       //attaches it to body tag -jquery
       canvasElement.appendTo('body');
+      canvasElement.backgroundColor = "#ff0000";
+
 
 
       setInterval(function(){
@@ -187,6 +198,10 @@
               enemy.draw();
           });
       }
+
+
+
+
       //}}>
     </script>
 </body>
