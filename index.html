@@ -41,9 +41,9 @@
       //bullet constructor to creat bullet instances
       function Bullet(I) {
           I.active = true;
-
+         // I.speed = 5;
           I.xVelocity = 0;
-          I.yVelocity = -I.speed;
+          I.yVelocity = -I.speed - 20;
           I.width = 3;
           I.height = 3;
           I.color = "#ff9933";
@@ -130,13 +130,15 @@
           update();
           draw();
 
-      }, 1000/FPS);
+      }, 1200/FPS);
 
 
 
       function update(){
           if(keydown.space) {
-            player.shoot();
+              player.shoot();
+             //singleshot mode: keydown.space = false;
+
           }
 
           if(keydown.left) {
