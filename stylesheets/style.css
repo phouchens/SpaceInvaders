@@ -1,5 +1,7 @@
+
 body {
-    background:black;
+    background:#000000;
+    filter: none !important;  /*over ride IE filter*/
 }
 
 canvas {
