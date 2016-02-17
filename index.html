@@ -36,6 +36,7 @@
 
       //player object
       var player = {
+         // active = true,
           color: "#00A",
           x: 50,
           y: 270,
@@ -48,6 +49,10 @@
           }
         };
 
+      player.explode = function() {
+          this.active = false;
+          //Insert explosion and end game
+      }
       var playerBullets = [];
 
 
@@ -123,9 +128,38 @@
             I.age ++;
             I.active = I.active && I.inBounds();
           };
+
+          I.explode = function() {
+              this.active = false;
+              //Insert explosion graphic
+          }
           return I;
       }
 
+      function collides(a,b){
+          return ((a.x < b.x + b.width) &&
+                 (a.x + a.width > b.x ) &&
+                 (a.y < b.y + b.height) &&
+                 (a.y+ a.height > b.y));
+      }
+
+      function handleCollision() {
+          playerBullets.forEach(function(bullet) {
+              enemies.forEach(function(enemy) {
+                  if(collides(bullet, enemy)) {
+                      enemy.explode();
+                      bullet.active =false;
+                  }
+              });
+          });
+
+          enemies.forEach(function(enemy) {
+              if(collides(enemy, player)) {
+                  enemy.explode();
+                  player.explode();
+              }
+          })
+      }
       //convention develop in JavaScript to use the $() function as a shortcut way to refer to document.getElementById().
       // or $(x) is the equivalent to document.getElementById(x)
       var canvasElement = $("<canvas width='" + CANVAS_WIDTH +
@@ -183,6 +217,8 @@
           if (Math.random()< 0.1) {
               enemies.push(Enemy());
           }
+
+          handleCollision();
       }
 
       //when a player shoots, creat a bullet instance and add it to collection
@@ -221,8 +257,7 @@
 
 
 
-     function drawStars()
-    {
+     function drawStars() {
         //Black BG for the canvas
         //translucent BG to show trail
         canvas.fillStyle = "rgba(0, 0, 0, 0.05)";
