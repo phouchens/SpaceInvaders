@@ -5,7 +5,7 @@ $(function main()  {
       var FPS = 30;
 
 
-
+    //Background Star info
         var starSize = 10;
         var columns = CANVAS_WIDTH/starSize; //number of columns for the stars
         //an array of drops - one per column
@@ -38,6 +38,27 @@ $(function main()  {
           kill(player, enemies);
       }
 
+
+      //when a player shoots, creat a bullet instance and add it to collection
+      player.shoot = function() {
+          var bulletPosition = this.midpoint();
+
+          playerBullets.push(Bullet({
+            speed: 5,
+            x: bulletPosition.x,
+            y: bulletPosition.y
+          }));
+      };
+
+      player.midpoint = function() {
+          return {
+            x: this.x + this.width/2,
+            y: this.y + this.height/2
+          };
+        };
+
+
+    //kills enemy and player
       function kill(player, enemies){
           enemies.forEach(function(enemy){
               enemy.active=false;
@@ -45,7 +66,6 @@ $(function main()  {
           player.alive=false;
 
        }
-
 
 
       var playerBullets = [];
@@ -90,6 +110,8 @@ $(function main()  {
 
       enemies =[];
 
+
+      //Enemy Constructor to create Enemy instances
       function Enemy(I) {
           //sets I to the parameter supplied or an empty object if none are provided.
           I = I || {};
@@ -127,6 +149,8 @@ $(function main()  {
           return I;
       }
 
+
+    //Collision Control
       function collides(a,b){
           return ((a.x < b.x + b.width) &&
                  (a.x + a.width > b.x ) &&
@@ -155,11 +179,8 @@ $(function main()  {
 
 
 
+    //Gets the Canvas and Canvas Element
 
-
-
-      //convention develop in JavaScript to use the $() function as a shortcut way to refer to document.getElementById().
-      // or $(x) is the equivalent to document.getElementById(x)
       var canvasElement = $("#myCanvas");
 
       //tells what type of canvas - 2d
@@ -167,8 +188,7 @@ $(function main()  {
 
 
 
-
-
+     //Game Loop
       setInterval(function(){
           update();
           draw();
@@ -177,11 +197,12 @@ $(function main()  {
           }, 1200/FPS);
 
 
-
+    //Updates the game status
       function update(){
           if(keydown.space) {
               player.shoot();
-             //singleshot mode: keydown.space = false;
+             //singleshot mode: comment out below to make full auto
+              keydown.space = false;
 
           }
 
@@ -217,24 +238,8 @@ $(function main()  {
           handleCollision();
       }
 
-      //when a player shoots, creat a bullet instance and add it to collection
-      player.shoot = function() {
-          var bulletPosition = this.midpoint();
 
-          playerBullets.push(Bullet({
-            speed: 5,
-            x: bulletPosition.x,
-            y: bulletPosition.y
-          }));
-      };
-
-      player.midpoint = function() {
-          return {
-            x: this.x + this.width/2,
-            y: this.y + this.height/2
-          };
-        };
-
+    //Draws Game state
       function draw() {
           canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
           if(player.alive=== true){
@@ -251,7 +256,7 @@ $(function main()  {
       }
 
 
-
+    //Draws Stars
      function drawStars() {
         //Black BG for the canvas
         //translucent BG to show trail
