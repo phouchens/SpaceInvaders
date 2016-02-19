@@ -25,6 +25,7 @@ $(function main()  {
           width: 20,
           height: 30,
           sprite: Sprite("player"),
+          alive: true,
 
           draw: function() {
             this.sprite.draw(canvas, this.x, this.y);
@@ -34,7 +35,19 @@ $(function main()  {
 
       player.explode = function() {
           //Insert explosion and end game
+          kill(player, enemies);
       }
+
+      function kill(player, enemies){
+          enemies.forEach(function(enemy){
+              enemy.active=false;
+            });
+          player.alive=false;
+
+       }
+
+
+
       var playerBullets = [];
 
 
@@ -136,8 +149,11 @@ $(function main()  {
                   enemy.explode();
                   player.explode();
               }
-          })
+          });
       }
+
+
+
 
 
 
@@ -221,7 +237,9 @@ $(function main()  {
 
       function draw() {
           canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-          player.draw();
+          if(player.alive=== true){
+              player.draw();
+          }
 
           playerBullets.forEach(function(bullet) {
             bullet.draw();
