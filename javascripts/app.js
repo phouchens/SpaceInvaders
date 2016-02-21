@@ -1,4 +1,4 @@
-$(function main()  {
+var main = function () {
 
       var CANVAS_WIDTH = 480;
       var CANVAS_HEIGHT = 320;
@@ -19,7 +19,6 @@ $(function main()  {
       //player object
       var player = {
 
-          color: "#00A",
           x: 50,
           y: 270,
           width: 20,
@@ -43,12 +42,14 @@ $(function main()  {
       player.shoot = function() {
           var bulletPosition = this.midpoint();
 
-          playerBullets.push(Bullet({
+
+            playerBullets.push(Bullet({
             speed: 5,
             x: bulletPosition.x,
             y: bulletPosition.y
           }));
-      };
+
+     }
 
       player.midpoint = function() {
           return {
@@ -74,7 +75,7 @@ $(function main()  {
       //bullet constructor to creat bullet instances
       function Bullet(I) {
           I.active = true;
-         // I.speed = 5;
+
           I.xVelocity = 0;
           I.yVelocity = -I.speed - 20;
           I.width = 3;
@@ -190,16 +191,18 @@ $(function main()  {
 
      //Game Loop
       setInterval(function(){
+          if (player.alive){
           update();
           draw();
           drawStars();
-
+          }
           }, 1200/FPS);
 
 
     //Updates the game status
       function update(){
-          if(keydown.space) {
+          if(keydown.space ) {
+
               player.shoot();
              //singleshot mode: comment out below to make full auto
               keydown.space = false;
@@ -282,4 +285,17 @@ $(function main()  {
 
 
 
-})
+};
+
+$("#document").ready(function () {
+    $("#canvas-container").hide();
+}) ;
+
+$("#clickMe").click(function () {
+    $("#startScreen").hide();
+    $("#canvas-container").show();
+    main();
+});
+
+
+

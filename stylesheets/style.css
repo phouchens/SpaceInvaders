@@ -14,3 +14,13 @@ canvas {
     border: 1px solid #ffffff;
     display: inline;
 }
+
+#startScreen {
+    width: 80%;
+    color:#ffffff;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    vertical-align: middle;
+
+}
