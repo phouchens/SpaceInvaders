@@ -6,13 +6,27 @@ body {
 
 #canvas-container {
     width: 100%;
+    position: relative;
     text-align: center;
-    /*border: 1px solid #ffffff;*/
 }
-canvas {
 
+#myCanvas {
+
+    position: absolute;
+    left: 25%;
     border: 1px solid #ffffff;
-    display: inline;
+
+}
+
+#gameOver {
+
+    position: absolute;
+    left: 40%;
+    top: 20%;
+    color: #ff7f00;
+    font-size: 40px;
+    cursor: default;
+    display: none;
 }
 
 #startScreen {

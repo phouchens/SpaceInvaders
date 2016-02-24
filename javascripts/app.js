@@ -190,12 +190,17 @@ var main = function () {
 
 
      //Game Loop
-      setInterval(function(){
-          if (player.alive){
+      var gameLoop = setInterval(function(){
+          if (player.alive)
+          {
           update();
           draw();
-          drawStars();
+          drawStars();}
+          else {
+              clearInterval(gameLoop);
+              $('#gameOver').show();
           }
+
           }, 1200/FPS);
 
 
@@ -284,6 +289,10 @@ var main = function () {
     }
 
 
+    function gameOver() {
+        ctx.fillStyle ="ffffff";
+        ctx.fillText("Game Over", c.height/2, c.width/2);
+    }
 
 };
 
