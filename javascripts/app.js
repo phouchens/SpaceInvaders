@@ -296,13 +296,18 @@ var main = function () {
 
 };
 
+
+
+
 $("#document").ready(function () {
     $("#canvas-container").hide();
 }) ;
 
+
 $("#clickMe").click(function () {
     $("#startScreen").hide();
     $("#canvas-container").show();
+    $("#score").show();
     main();
 });
 
